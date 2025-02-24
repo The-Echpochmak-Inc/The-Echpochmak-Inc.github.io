@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import type { PostType } from '../utils';
+
+type Props = {
+    post: PostType
+};
+
+const {post} = Astro.props;
+const {slug} = post;
+const {title, description, pubDate} = post.data;
+const minutesRead = Math.ceil(description.split(' ').length / 200);
+const minuteReadWord = minutesRead === 1 ? 'minute' : 'minutes';
+---
+
+<a href={"/blog/" + slug}>
+	<div
+		class="h-full rounded-2xl bg-stone-200/50 from-orange-900 via-amber-700 to-white p-[1px] text-sm shadow-[inset_0_0_0_1px_rgba(255,255,255,0.4)] hover:bg-gradient-to-r dark:bg-gray-900"
+	>
+		<div
+			class="flex h-full w-full
+		flex-col
+    rounded-[1rem]
+		bg-stone-300
+		p-4
+		text-gray-900
+    opacity-90
+    dark:bg-stone-800
+		dark:text-white"
+		>
+			<div class="flex-auto">
+				<div class="flex justify-between pb-4 text-xs">
+					<p><FormattedDate date={pubDate}></FormattedDate></p>
+					<p>{minutesRead} {minuteReadWord} read</p>
+				</div>
+
+				<p class="pb-4 text-lg font-bold">{title}</p>
+
+				<p class="line-clamp-6 pt-4">{description}</p>
+			</div>
+			<p class="pt-4 underline">read more →</p>
+		</div>
+	</div>
+</a>
